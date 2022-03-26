@@ -11,7 +11,6 @@ namespace Scrumbs.SignalRGame
 
         public async Task NewGroup()
         {
-            Groups.
         }
     }
     public class Card
