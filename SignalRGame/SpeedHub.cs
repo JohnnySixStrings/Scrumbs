@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Scrumbs.SignalRGame
 {
-    public class SpeedHub: Hub
+    public class SpeedHub : Hub
     {
         public async Task PlayCard(string user, string group, Card card, CancellationToken cancellationToken){ 
             await Clients.OthersInGroup(group).SendAsync("MoveHandler", user, "GameState",cancellationToken);

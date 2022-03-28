@@ -1,3 +1,5 @@
+using Scrumbs.SignalRGame;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,11 +19,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-
+app.MapHub<SpeedHub>("game");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
-app.MapHub<SpeedHub>();
+
 app.MapFallbackToFile("index.html"); ;
 
 app.Run();
