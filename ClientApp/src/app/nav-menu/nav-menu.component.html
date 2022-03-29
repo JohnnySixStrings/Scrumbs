@@ -28,12 +28,16 @@
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
+            <a class="nav-link text-dark" [routerLink]="['/speed-game']"
+              >Speed</a
+            >
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark dead" [routerLink]="['/counter']"
               >Counter</a
             >
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
+            <a class="nav-link text-dark dead" [routerLink]="['/fetch-data']"
               >Fetch data</a
             >
           </li>

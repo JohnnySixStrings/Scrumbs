@@ -1,6 +1,6 @@
 <div class="board">
-    <div class="player" 
-        cdkDropList 
+    <div class="player"
+        cdkDropList
         #playerHand="cdkDropList"
         [cdkDropListData]="hand1">
         <div class="heading hand">Opponent Hand</div>
@@ -11,15 +11,15 @@
     </div>
 
   <div class="middle">
-    <div class="continue contL" 
-        cdkDropList 
+    <div class="continue contL"
+        cdkDropList
         [cdkDropListData]="continueL">
         <div class="heading continue left">Continue Spot Left</div>
         <div *ngFor="let item of continueL" class="card" cdkDrag>{{item}}</div>
     </div>
 
-    <div class="play playL" 
-      cdkDropList 
+    <div class="play playL"
+      cdkDropList
       #playableLeft="cdkDropList"
       [cdkDropListData]="playL"
       [cdkDropListConnectedTo]="[playerHand]"
@@ -29,8 +29,8 @@
       <div *ngFor="let item of playL" class="card" cdkDrag>{{item}}</div>
     </div>
 
-    <div class="play playR" 
-      cdkDropList 
+    <div class="play playR"
+      cdkDropList
       #playableRight="cdkDropList"
       [cdkDropListData]="playR"
       [cdkDropListConnectedTo]="[playerHand]"
@@ -40,16 +40,16 @@
       <div *ngFor="let item of playR" class="card" cdkDrag>{{item}}</div>
     </div>
 
-    <div class="continue contR" 
-        cdkDropList 
+    <div class="continue contR"
+        cdkDropList
         [cdkDropListData]="continueR">
         <div class="heading playleft">Continue Spot Right</div>
         <div *ngFor="let item of continueR" class="card" cdkDrag>{{item}}</div>
     </div>
   </div>
 
-    <div class="player" 
-        cdkDropList 
+    <div class="player"
+        cdkDropList
         #playerHand="cdkDropList"
         [cdkDropListData]="hand2"
         [cdkDropListConnectedTo]="[playableLeft,playableRight]"
@@ -62,3 +62,10 @@
         </div>
     </div>
 </div>
+
+<br>
+<h2> testin displayin cards </h2>
+<img src="https://github.com/hayeah/playing-cards-assets/blob/master/png/10_of_clubs.png?raw=true" alt="10 of clubs" width="15%">
+<!-- images only worked when i put them in assets lol -->
+<img src="../../assets/cardImages/10_of_clubs.png" alt="10 of clubs" width="15%">
+<img src="../../assets/cardImages/bradCard.png" alt="card back" width="15%">

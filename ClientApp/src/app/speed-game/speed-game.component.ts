@@ -43,3 +43,14 @@ noMatchPredicate() {
   ngOnInit(): void {}
 
 }
+
+/* Cards: value 1-13, unique img for face, default img for back
+  player hand and playable table cards are faceup, opponent hand are face down*/
+interface cardInfo {
+  faceImg: string;
+  backImg: "./res/bradCard.png"
+  value: string;
+  cardState: 'facedown' | 'faceup';
+  /* it would probably be easier to get rid of backImg here
+    and use facedown to determine whether to show face or back, since back is a default */
+}
