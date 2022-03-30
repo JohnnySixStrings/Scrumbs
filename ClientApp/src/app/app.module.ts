@@ -9,7 +9,10 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexModule } from '@angular/flex-layout';
+import { SpeedGameComponent } from './speed-game/speed-game.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+//import { FlexModule } from '@angular/flex-layout';
+import { CardsComponent} from './cards/cards.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,8 @@ import { FlexModule } from '@angular/flex-layout';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
+    SpeedGameComponent,
+    CardsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -27,9 +32,12 @@ import { FlexModule } from '@angular/flex-layout';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'cards', component: CardsComponent },
+      { path: 'speed-game', component: SpeedGameComponent}
     ]),
     BrowserAnimationsModule,
-    FlexModule,
+    DragDropModule,
+    //FlexModule
   ],
   providers: [],
   bootstrap: [AppComponent],
