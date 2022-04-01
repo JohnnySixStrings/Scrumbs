@@ -29,7 +29,7 @@ public class SpeedHub : Hub
         {
             for (int j = 1; i < 14; i++)
             {
-                cards.Add(new Card { SuiteNumber = j, House = (House)i, faceUp = false });
+                cards.Add(new Card { SuiteNumber = j, House = (House)i, FaceUp = false });
             }
         }
         return cards.OrderBy(a => Guid.NewGuid()).ToList();
@@ -42,7 +42,7 @@ public class Card
     [Max(13)]
     public int SuiteNumber { get; set; }
     public House House { get; set; }
-    public bool faceUp { get; set; }
+    public bool FaceUp { get; set; }
 }
 public enum House
 {
