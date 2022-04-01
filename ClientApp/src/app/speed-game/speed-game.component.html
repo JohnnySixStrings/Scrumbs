@@ -71,6 +71,8 @@
 <br />
 <h2>testin displayin cards</h2>
 
+<button btn btn-primary (click)="playCard()">Play Card</button>
+<button btn btn-primary (click)="test()">Test</button>
 <div>
   <app-cards *ngFor="let card of hand" [cardInfo]="card"></app-cards>
 </div>

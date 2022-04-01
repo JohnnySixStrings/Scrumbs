@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CardInfo } from '../speed-game/speed-game.component';
+import { CardInfo, House } from '../speed-game/speed-game.component';
 
 @Component({
   selector: 'app-cards',
@@ -12,9 +12,9 @@ export class CardsComponent implements OnInit {
   cardInfo!: CardInfo;
 
   ngOnInit(): void {
-    this.cardInfo.value;
+    this.cardInfo.suiteNumber;
     this.cardImgUrl = `../../assets/cardImages/${
-      this.cardInfo.value
-    }_of_${this.cardInfo.house.toLowerCase()}s.png`;
+      this.cardInfo.suiteNumber
+    }_of_${House[this.cardInfo.house].toLowerCase()}s.png`;
   }
 }
