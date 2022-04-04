@@ -12,9 +12,11 @@ export class CardsComponent implements OnInit {
   cardInfo!: CardInfo;
 
   ngOnInit(): void {
+    console.log(this.cardInfo);
     this.cardInfo.suiteNumber;
     this.cardImgUrl = `../../assets/cardImages/${
       this.cardInfo.suiteNumber
-    }_of_${House[this.cardInfo.house].toLowerCase()}s.png`;
+      }_of_${House[this.cardInfo.house - 1]?.toLowerCase()}s.png`;
+    
   }
 }

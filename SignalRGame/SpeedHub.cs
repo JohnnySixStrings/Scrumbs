@@ -13,10 +13,19 @@ public class SpeedHub : Hub
     }
     public async Task NewGame()
     {
+        Console.WriteLine(Context.ConnectionId);
+
         var deck = NewDeck();
         var playerOneHand = deck.GetRange(0 , 5);
         var playerTwoHand = deck.GetRange(5, 5);
-        await Clients.All.SendAsync("NewGame", new { PlayerOneHand = playerOneHand, PlayerTwoHand = playerTwoHand });
+        var continueL = deck.GetRange(10,5);
+        var continueR = deck.GetRange(15,5);
+        var playerOneStack = deck.GetRange(20, 15);
+        var playerTwoStack = deck.GetRange(35, 15);
+        var playL = deck.GetRange(50, 1);
+        var playR = deck.GetRange(51, 1);
+
+        await Clients.All.SendAsync("NewGame", new { PlayerOneHand = playerOneHand, PlayerTwoHand = playerTwoHand , ContinueL = continueL, ContinueR = continueR, PlayerOneStack = playerOneStack, PlayerTwoStack = playerTwoStack, PlayL = playL, PlayR = playR}, Context.ConnectionAborted);
     }
     public async Task Test()
     {
@@ -27,7 +36,7 @@ public class SpeedHub : Hub
         var cards = new List<Card>();
         for (int i = 1; i < 5; i++)
         {
-            for (int j = 1; i < 14; i++)
+            for (int j = 1; j < 14; j++)
             {
                 cards.Add(new Card { SuiteNumber = j, House = (House)i, FaceUp = false });
             }

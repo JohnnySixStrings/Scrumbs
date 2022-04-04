@@ -37,4 +37,10 @@ export class SignalrService {
       .invoke('Test')
       .catch((err) => console.log(`Error with test: ${err}`));
   }
+
+  public newGame() {
+    this.hubConnection
+      .send('NewGame')
+      .catch((err) => console.log(`Error with test: ${err}`));
+  }
 }
