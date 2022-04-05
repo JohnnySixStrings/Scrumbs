@@ -24,7 +24,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   hand1Stack: CardInfo[];
   hand2Stack: CardInfo[];
 
-  hand: CardInfo[] = [{ suiteNumber: 3, house: House.Club, faceUp: true }];
+  //hand: CardInfo[] = [{ suiteNumber: 3, house: House.Club, faceUp: true }];
 
   constructor(private signalr: SignalrService) {
 
@@ -51,7 +51,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     this.signalr.disposeHandlers('MoveHandler');
     this.signalr.disposeHandlers('NewGame');
   }
-  //this needs fixing
+
   drop(event: CdkDragDrop<CardInfo[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(

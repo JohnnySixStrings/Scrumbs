@@ -13,26 +13,26 @@
     <div class="middle">
       <div class="continue contL" cdkDropList [cdkDropListData]="continueL">
         <app-cards *ngFor="let card of continueL" [cardInfo]="card" cdkDrag></app-cards>
-    </div>
+      </div>
 
       <div class="play playL"
-           cdkDropList
-           #playableLeft="cdkDropList"
-           [cdkDropListData]="playL"
-           [cdkDropListConnectedTo]="[playerHand]"
-           (cdkDropListDropped)="drop($event)"
-           [cdkDropListEnterPredicate]="matchPredicate">
-        <app-cards *ngFor="let card of playL" [cardInfo]="card" cdkDrag></app-cards>
+          cdkDropList
+          #playableLeft="cdkDropList"
+          [cdkDropListData]="playL"
+          [cdkDropListConnectedTo]="[playerHand]"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListEnterPredicate]="matchPredicate">
+      <app-cards *ngFor="let card of playL" [cardInfo]="card" cdkDrag></app-cards>
       </div>
 
       <div class="play playR"
-           cdkDropList
-           #playableRight="cdkDropList"
-           [cdkDropListData]="playR"
-           [cdkDropListConnectedTo]="[playerHand]"
-           (cdkDropListDropped)="drop($event)"
-           [cdkDropListEnterPredicate]="matchPredicate">
-        <app-cards *ngFor="let card of playR" [cardInfo]="card" cdkDrag></app-cards>
+          cdkDropList
+          #playableRight="cdkDropList"
+          [cdkDropListData]="playR"
+          [cdkDropListConnectedTo]="[playerHand]"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListEnterPredicate]="matchPredicate">
+      <app-cards *ngFor="let card of playR" [cardInfo]="card" cdkDrag></app-cards>
       </div>
 
       <div class="continue contR" cdkDropList [cdkDropListData]="continueR">
@@ -49,14 +49,11 @@
       (cdkDropListDropped)="drop($event)"
       [cdkDropListEnterPredicate]="noMatchPredicate"
     >
-      <div class="middle">
-        <app-cards *ngFor="let card of hand2" [cardInfo]="card" cdkDrag></app-cards>
-      </div>
+    <div class="middle">
+      <app-cards *ngFor="let card of hand2" [cardInfo]="card" cdkDrag></app-cards>
     </div>
-  </div>
-
-  <br />
-  <h2>testin displayin cards</h2>
+    </div>
+</div>
 
   <button btn btn-primary (click)="newGame()">Play</button>
   <button btn btn-primary (click)="playCard()">Play Card</button>
