@@ -1,69 +1,70 @@
 <div class="board">
-    <div
-      class="player"
-      cdkDropList
-      #playerHand="cdkDropList"
-      [cdkDropListData]="hand1"
-    >
+  <div id="hand1"
+       class="player"
+       cdkDropList
+       #playerHand="cdkDropList"
+       [cdkDropListData]="hand1">
     <div class="middle">
-      <app-cards *ngFor="let card of hand1" [cardInfo]="card" cdkDrag></app-cards>
+      <app-cards *ngFor="let card of hand1"
+                 [cardInfo]="card"
+                 cdkDrag></app-cards>
     </div>
+  </div>
+
+  <div class="middle">
+    <div class="continue contL" cdkDropList [cdkDropListData]="continueL">
+      <ng-container *ngFor="let card of continueL; first as isFirst">
+        <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
+      </ng-container>
     </div>
 
+    <div id="playL"
+         class="play playL"
+         cdkDropList
+         #playableLeft="cdkDropList"
+         [cdkDropListData]="playL"
+         [cdkDropListConnectedTo]="[playerHand]"
+         (cdkDropListDropped)="drop($event)"
+         [cdkDropListEnterPredicate]="matchPredicate">
+      <ng-container *ngFor="let card of playL; first as isFirst">
+        <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
+      </ng-container>
+    </div>
+
+    <div id="playR"
+         class="play playR"
+         cdkDropList
+         #playableRight="cdkDropList"
+         [cdkDropListData]="playR"
+         [cdkDropListConnectedTo]="[playerHand]"
+         (cdkDropListDropped)="drop($event)"
+         [cdkDropListEnterPredicate]="matchPredicate">
+      <ng-container *ngFor="let card of playR; first as isFirst">
+        <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
+      </ng-container>
+    </div>
+
+    <div class="continue contR" cdkDropList [cdkDropListData]="continueR">
+      <ng-container *ngFor="let card of continueR; first as isFirst">
+        <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
+      </ng-container>
+    </div>
+  </div>
+
+  <div id="hand2"
+       class="player"
+       cdkDropList
+       #playerHand="cdkDropList"
+       [cdkDropListData]="hand2"
+       [cdkDropListConnectedTo]="[playableLeft, playableRight]">
     <div class="middle">
-      <div class="continue contL" cdkDropList [cdkDropListData]="continueL">
-        <app-cards *ngFor="let card of continueL" [cardInfo]="card" cdkDrag></app-cards>
-      </div>
-
-      <div class="play playL"
-          cdkDropList
-          #playableLeft="cdkDropList"
-          [cdkDropListData]="playL"
-          [cdkDropListConnectedTo]="[playerHand]"
-          (cdkDropListDropped)="drop($event)"
-          [cdkDropListEnterPredicate]="matchPredicate">
-      <app-cards *ngFor="let card of playL" [cardInfo]="card" cdkDrag></app-cards>
-      </div>
-
-      <div class="play playR"
-          cdkDropList
-          #playableRight="cdkDropList"
-          [cdkDropListData]="playR"
-          [cdkDropListConnectedTo]="[playerHand]"
-          (cdkDropListDropped)="drop($event)"
-          [cdkDropListEnterPredicate]="matchPredicate">
-      <app-cards *ngFor="let card of playR" [cardInfo]="card" cdkDrag></app-cards>
-      </div>
-
-      <div class="continue contR" cdkDropList [cdkDropListData]="continueR">
-        <app-cards *ngFor="let card of continueR" [cardInfo]="card" cdkDrag></app-cards>
-      </div>
+      <app-cards *ngFor="let card of hand2"
+                 [cardInfo]="card"
+                 cdkDrag></app-cards>
     </div>
-
-    <div
-      class="player"
-      cdkDropList
-      #playerHand="cdkDropList"
-      [cdkDropListData]="hand2"
-      [cdkDropListConnectedTo]="[playableLeft, playableRight]"
-      (cdkDropListDropped)="drop($event)"
-      [cdkDropListEnterPredicate]="noMatchPredicate"
-    >
-    <div class="middle">
-      <app-cards *ngFor="let card of hand2" [cardInfo]="card" cdkDrag></app-cards>
-    </div>
-    </div>
+  </div>
 </div>
 
-  <button btn btn-primary (click)="newGame()">Play</button>
-  <button btn btn-primary (click)="playCard()">Play Card</button>
-  <button btn btn-primary (click)="test()">Test</button>
-
-  <!-- <img
-    src="https://github.com/hayeah/playing-cards-assets/blob/master/png/10_of_clubs.png?raw=true"
-    alt="10 of clubs"
-    width="15%"
-  />
-  <!-- images only worked when i put them in assets lol -->
-      <!--
-  <img src="../../assets/cardImages/bradCard.png" alt="card back" width="15%" /> -->
+<button btn btn-primary (click)="newGame()">Play</button>
+<button btn btn-primary (click)="playCard()">Play Card</button>
+<button btn btn-primary (click)="test()">Test</button>

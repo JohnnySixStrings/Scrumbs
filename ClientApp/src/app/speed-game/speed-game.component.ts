@@ -53,6 +53,11 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   drop(event: CdkDragDrop<CardInfo[]>) {
+
+    if (!this.isValidPlay(event)) {
+      return; 
+    }
+
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -66,7 +71,36 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         event.previousIndex,
         0
       );
+
+      this.hand2.push(this.hand2Stack[this.hand2Stack.length - 1]);
+      this.hand2Stack.pop();
     }
+ 
+  }
+
+  isValidPlay(event: CdkDragDrop<CardInfo[]>) {
+
+    let valid: boolean = false;
+    let container = event.container.data[0].suiteNumber;
+    let pcontainer = event.previousContainer.data[event.previousIndex].suiteNumber;
+    let element = event.container.element.nativeElement.id;
+
+    if (element == "playL" || element == "playR") {
+      if (container + 1 === pcontainer) {
+        valid = true;
+      }
+      else if (container - 1 === pcontainer) {
+        valid = true;
+      }
+      if (container == 13 && pcontainer == 1) {
+        valid = true;
+      }
+      else if (container == 1 && pcontainer == 13) {
+        valid = true;
+      }
+    }
+
+    return valid; 
   }
 
   newGame() {
@@ -85,7 +119,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     this.signalr.test();
   }
 
-  matchPredicate(item: CdkDrag<number>) {
+  matchPredicate(item: CdkDrag<CardInfo>) {
     return true;
   }
 
