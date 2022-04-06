@@ -29,9 +29,9 @@ export class SignalrService {
     this.hubConnection.off(funcName);
   }
 
-  public playCard(user: string, cardInfo: CardInfo) {
+  public playCard(data: any) {
     this.hubConnection
-      .send('PlayCard', user, cardInfo)
+      .send('PlayCard', data)
       .catch((err) => console.log(`Error with play card: ${err}`));
   }
 

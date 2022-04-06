@@ -1,18 +1,17 @@
 <div class="board">
   <div id="hand1"
-       class="player"
-       cdkDropList
-       #playerHand="cdkDropList"
-       [cdkDropListData]="hand1">
+       class="player">
+    <div class="stack">
+      <p>{{hand1Stack?.length}} {{player2Name}}</p>
+    </div>
     <div class="middle">
       <app-cards *ngFor="let card of hand1"
-                 [cardInfo]="card"
-                 cdkDrag></app-cards>
+                 [cardInfo]="card"></app-cards>
     </div>
   </div>
 
   <div class="middle">
-    <div class="continue contL" cdkDropList [cdkDropListData]="continueL">
+    <div id="continueL"class="continue contL" cdkDropList [cdkDropListData]="continueL" [cdkDropListConnectedTo]="[playableLeft]">
       <ng-container *ngFor="let card of continueL; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
@@ -25,7 +24,8 @@
          [cdkDropListData]="playL"
          [cdkDropListConnectedTo]="[playerHand]"
          (cdkDropListDropped)="drop($event)"
-         [cdkDropListEnterPredicate]="matchPredicate">
+         [cdkDropListEnterPredicate]="matchPredicate"
+         cdkDropListSortingDisabled>
       <ng-container *ngFor="let card of playL; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
@@ -38,13 +38,14 @@
          [cdkDropListData]="playR"
          [cdkDropListConnectedTo]="[playerHand]"
          (cdkDropListDropped)="drop($event)"
-         [cdkDropListEnterPredicate]="matchPredicate">
+         [cdkDropListEnterPredicate]="matchPredicate"
+         cdkDropListSortingDisabled>
       <ng-container *ngFor="let card of playR; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
     </div>
 
-    <div class="continue contR" cdkDropList [cdkDropListData]="continueR">
+    <div id="continueR" class="continue contR" cdkDropList [cdkDropListData]="continueR" [cdkDropListConnectedTo]="[playableRight]">
       <ng-container *ngFor="let card of continueR; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
@@ -56,24 +57,29 @@
        cdkDropList
        #playerHand="cdkDropList"
        [cdkDropListData]="hand2"
-       [cdkDropListConnectedTo]="[playableLeft, playableRight]">
+       [cdkDropListConnectedTo]="[playableLeft, playableRight]"
+       cdkDropListSortingDisabled>
     <div class="middle">
       <app-cards *ngFor="let card of hand2"
                  [cardInfo]="card"
                  cdkDrag></app-cards>
     </div>
+
+    <div class="stack">
+      <p>{{hand2Stack?.length}} {{playerName}} </p>
+    </div>
+    
   </div>
 </div>
 
-<button btn btn-primary (click)="newGame()">Play</button>
+<div id="playGame">
+
+  <label for="name">Name: </label>
+  <input type="text" [formControl]="name" id="userInput" value="Joe">
+  <button btn btn-primary (click)="newUser()">New User</button>
+  <br>
+  <button btn btn-primary (click)="newGame()">Play Game!</button>
+</div>
 <!-- <button btn btn-primary (click)="playCard()">Play Card</button> -->
-<br><br>
 
-<label for="name">Name: </label>
-<input type="text" [formControl]="name" id="userInput" value="Joe">
-<button btn btn-primary (click)="newUser()">New User</button>
-
-<p>{{playerName}}</p>
-<p>{{hand1Stack?.length}}</p>
-
-<div *ngIf="isPlayerOne" {{hand1Stack.length}}></div>
+<!--<div *ngIf="isPlayerOne" {{hand1Stack?.length}}></div>-->

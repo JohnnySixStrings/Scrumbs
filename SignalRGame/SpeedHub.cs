@@ -14,10 +14,10 @@ public class SpeedHub : Hub
         playerData = data;
     }
 
-    public async Task PlayCard(string user, Card card)
+    public async Task PlayCard(GameState obj)
     {
         Console.WriteLine(Context.ConnectionId);
-        await Clients.AllExcept(Context.ConnectionId).SendAsync("MoveHandler", user, card, Context.ConnectionAborted);
+        await Clients.AllExcept(Context.ConnectionId).SendAsync("MoveHandler", obj, Context.ConnectionAborted);
     }
     public async Task NewGame()
     {
@@ -99,4 +99,16 @@ public class Game
     public string Name { get; set; }
     public IList<User> Players { get; set; }
     public IList<Card> OriginalDeck { get; set; }
+}
+
+public class GameState
+{
+    public IList<Card> Hand1 { get; set; }
+    public IList<Card> Hand2 { get; set; }
+    public IList<Card> PlayR { get; set; }
+    public IList<Card> PlayL { get; set; }
+    public IList<Card> ContinueL { get; set; }
+    public IList<Card> ContinueR { get; set; }
+    public IList<Card> Hand1Stack { get; set; }
+    public IList<Card> Hand2Stack { get; set; }
 }
