@@ -74,6 +74,6 @@
 <button btn btn-primary (click)="newUser()">New User</button>
 
 <p>{{playerName}}</p>
-<p>{{hand1Stack.length}}</p>
+<p>{{hand1Stack?.length}}</p>
 
 <div *ngIf="isPlayerOne" {{hand1Stack.length}}></div>

@@ -14,7 +14,8 @@ public class SpeedHub : Hub
         playerData = data;
     }
 
-    public async Task PlayCard(string user, Card card) {
+    public async Task PlayCard(string user, Card card)
+    {
         Console.WriteLine(Context.ConnectionId);
         await Clients.AllExcept(Context.ConnectionId).SendAsync("MoveHandler", user, card, Context.ConnectionAborted);
     }
@@ -23,25 +24,28 @@ public class SpeedHub : Hub
         Console.WriteLine(Context.ConnectionId);
 
         var deck = NewDeck();
-        var playerOneHand = deck.GetRange(0 , 5);
+        var playerOneHand = deck.GetRange(0, 5);
         var playerTwoHand = deck.GetRange(5, 5);
-        var continueL = deck.GetRange(10,5);
-        var continueR = deck.GetRange(15,5);
+        var continueL = deck.GetRange(10, 5);
+        var continueR = deck.GetRange(15, 5);
         var playerOneStack = deck.GetRange(20, 15);
         var playerTwoStack = deck.GetRange(35, 15);
-        var playL = deck.GetRange(50, 1).Select(c => new Card{SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true});
-        var playR = deck.GetRange(51, 1).Select(c => new Card{SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true});
+        var playL = deck.GetRange(50, 1).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true });
+        var playR = deck.GetRange(51, 1).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true });
 
-        await Clients.All.SendAsync("NewGame", new { PlayerOneHand = playerOneHand, PlayerTwoHand = playerTwoHand , ContinueL = continueL, ContinueR = continueR, PlayerOneStack = playerOneStack, PlayerTwoStack = playerTwoStack, PlayL = playL, PlayR = playR, players = playerData.players}, Context.ConnectionAborted);
+        await Clients.All.SendAsync("NewGame", new { PlayerOneHand = playerOneHand, PlayerTwoHand = playerTwoHand, ContinueL = continueL, ContinueR = continueR, PlayerOneStack = playerOneStack, PlayerTwoStack = playerTwoStack, PlayL = playL, PlayR = playR, players = playerData.players }, Context.ConnectionAborted);
     }
-    public async Task NewUser(string UserName)
+    public void NewUser(string UserName)
     {
         var connenctions = playerData.players.Select(p => p.ConnectionId).ToList();
-        
-        if(connenctions.Contains(Context.ConnectionId)){
+
+        if (connenctions.Contains(Context.ConnectionId))
+        {
             playerData.players[connenctions.IndexOf(Context.ConnectionId)].UserName = UserName;
-        } else {
-            playerData.players.Add(new User{UserName = UserName, ConnectionId = Context.ConnectionId});
+        }
+        else
+        {
+            playerData.players.Add(new User { UserName = UserName, ConnectionId = Context.ConnectionId });
         }
     }
 
@@ -95,4 +99,4 @@ public class Game
     public string Name { get; set; }
     public IList<User> Players { get; set; }
     public IList<Card> OriginalDeck { get; set; }
-} 
+}

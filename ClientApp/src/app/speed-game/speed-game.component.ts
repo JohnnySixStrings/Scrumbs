@@ -4,6 +4,7 @@ import {
   moveItemInArray,
   transferArrayItem,
   CdkDrag,
+  DropListRef,
 } from '@angular/cdk/drag-drop';
 import { SignalrService } from '../signalr.service';
 import { Subject } from 'rxjs';
@@ -23,7 +24,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   continueR: CardInfo[];
   hand1Stack: CardInfo[];
   hand2Stack: CardInfo[];
-  name: FormControl = new FormControl;
+  name: FormControl = new FormControl();
   playerName: string = '';
   isPlayerOne: boolean = true;
 
@@ -40,7 +41,11 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
       if (connectionID == data.players[0].connectionId) {
         this.isPlayerOne = true;
         this.hand1 = data.playerOneHand;
-        this.hand2 = data.playerTwoHand;
+        this.hand2 = data.playerTwoHand.map((c) => ({
+          suiteNumber: c.suiteNumber,
+          house: c.house,
+          faceUp: true,
+        }));
         this.continueL = data.continueL;
         this.continueR = data.continueR;
         this.hand1Stack = data.playerOneStack;
@@ -49,7 +54,11 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         this.playR = data.playR;
       } else {
         this.isPlayerOne = false;
-        this.hand2 = data.playerOneHand;
+        this.hand2 = data.playerOneHand.map((c) => ({
+          suiteNumber: c.suiteNumber,
+          house: c.house,
+          faceUp: true,
+        }));
         this.hand1 = data.playerTwoHand;
         this.continueR = data.continueL;
         this.continueL = data.continueR;
@@ -67,9 +76,8 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   drop(event: CdkDragDrop<CardInfo[]>) {
-
     if (!this.isValidPlay(event)) {
-      return; 
+      return;
     }
 
     if (event.previousContainer === event.container) {
@@ -82,36 +90,35 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         0
       );
 
-      this.hand2.push(this.hand2Stack[this.hand2Stack.length - 1]);
+      let card: CardInfo = this.hand2Stack[this.hand2Stack.length - 1];
+      card.faceUp = true;
+      this.hand2.push(card);
       this.hand2Stack.pop();
       //playCard(gamestate here);
     }
- 
   }
 
   isValidPlay(event: CdkDragDrop<CardInfo[]>) {
-
     let valid: boolean = false;
     let container = event.container.data[0].suiteNumber;
-    let pcontainer = event.previousContainer.data[event.previousIndex].suiteNumber;
+    let pcontainer =
+      event.previousContainer.data[event.previousIndex].suiteNumber;
     let element = event.container.element.nativeElement.id;
 
-    if (element == "playL" || element == "playR") {
+    if (element == 'playL' || element == 'playR') {
       if (container + 1 === pcontainer) {
         valid = true;
-      }
-      else if (container - 1 === pcontainer) {
+      } else if (container - 1 === pcontainer) {
         valid = true;
       }
       if (container == 13 && pcontainer == 1) {
         valid = true;
-      }
-      else if (container == 1 && pcontainer == 13) {
+      } else if (container == 1 && pcontainer == 13) {
         valid = true;
       }
     }
 
-    return valid; 
+    return valid;
   }
 
   newGame() {
@@ -119,7 +126,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   newUser() {
-    this.playerName =  this.name.value;
+    this.playerName = this.name.value;
     this.signalr.newUser(this.name.value);
   }
 
@@ -154,3 +161,9 @@ export enum House {
   Club,
   Diamond,
 }
+
+//todo
+// layout shifting on drag/drop
+// pass data/gamestate between players on play-card func
+// finalize Ui and make it look pretty
+//add continue logic
