@@ -12,8 +12,6 @@ div {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  background: #55341a;
-
 }
 
 .player {
@@ -27,20 +25,17 @@ div {
   border: 1px solid black;
   display: flex;
   flex-direction: column;
-  background: #3572b0;
 }
 
 .continue {
   border: 1px solid black;
   display: flex;
   flex-direction: column;
-  background: #f6c342;
 }
 
 .card {
     padding: 0.75em 1.5em 0.75em 1em;
     margin: 1.5em;
-    background: #cfcfcf;
     cursor: pointer;
     font-size: 0.85em;
     font-family: "Roboto Slab", sans-serif;
@@ -53,11 +48,9 @@ div {
 .heading {
   padding: 1em 0;
   font-weight: bolder;
-  background: #d7c4d8;
   color: #000000;
   font-family: "Roboto Slab", sans-serif;
 }
   
 .hand {
-    background: #14892c;
 }

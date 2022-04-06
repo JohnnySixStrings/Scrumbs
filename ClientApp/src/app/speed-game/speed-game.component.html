@@ -1,16 +1,13 @@
 <div class="board">
-  <div
-    class="player"
-    cdkDropList
-    #playerHand="cdkDropList"
-    [cdkDropListData]="hand1"
-  >
+  <div id="hand1"
+       class="player"
+       cdkDropList
+       #playerHand="cdkDropList"
+       [cdkDropListData]="hand1">
     <div class="middle">
-      <app-cards
-        *ngFor="let card of hand1"
-        [cardInfo]="card"
-        cdkDrag
-      ></app-cards>
+      <app-cards *ngFor="let card of hand1"
+                 [cardInfo]="card"
+                 cdkDrag></app-cards>
     </div>
   </div>
 
@@ -21,54 +18,49 @@
       </ng-container>
     </div>
 
-    <div
-      class="play playL"
-      cdkDropList
-      #playableLeft="cdkDropList"
-      [cdkDropListData]="playL"
-      [cdkDropListConnectedTo]="[playerHand]"
-      (cdkDropListDropped)="drop($event)"
-      [cdkDropListEnterPredicate]="matchPredicate"
-    >
+    <div id="playL"
+         class="play playL"
+         cdkDropList
+         #playableLeft="cdkDropList"
+         [cdkDropListData]="playL"
+         [cdkDropListConnectedTo]="[playerHand]"
+         (cdkDropListDropped)="drop($event)"
+         [cdkDropListEnterPredicate]="matchPredicate">
       <ng-container *ngFor="let card of playL; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
     </div>
 
-    <div
-      class="play playR"
-      cdkDropList
-      #playableRight="cdkDropList"
-      [cdkDropListData]="playR"
-      [cdkDropListConnectedTo]="[playerHand]"
-      (cdkDropListDropped)="drop($event)"
-      [cdkDropListEnterPredicate]="matchPredicate"
-    >
+    <div id="playR"
+         class="play playR"
+         cdkDropList
+         #playableRight="cdkDropList"
+         [cdkDropListData]="playR"
+         [cdkDropListConnectedTo]="[playerHand]"
+         (cdkDropListDropped)="drop($event)"
+         [cdkDropListEnterPredicate]="matchPredicate">
       <ng-container *ngFor="let card of playR; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
     </div>
 
     <div class="continue contR" cdkDropList [cdkDropListData]="continueR">
-      <ng-container *ngFor="let card of continueL; first as isFirst">
+      <ng-container *ngFor="let card of continueR; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
     </div>
   </div>
 
-  <div
-    class="player"
-    cdkDropList
-    #playerHand="cdkDropList"
-    [cdkDropListData]="hand2"
-    [cdkDropListConnectedTo]="[playableLeft, playableRight]"
-  >
+  <div id="hand2"
+       class="player"
+       cdkDropList
+       #playerHand="cdkDropList"
+       [cdkDropListData]="hand2"
+       [cdkDropListConnectedTo]="[playableLeft, playableRight]">
     <div class="middle">
-      <app-cards
-        *ngFor="let card of hand2"
-        [cardInfo]="card"
-        cdkDrag
-      ></app-cards>
+      <app-cards *ngFor="let card of hand2"
+                 [cardInfo]="card"
+                 cdkDrag></app-cards>
     </div>
   </div>
 </div>
