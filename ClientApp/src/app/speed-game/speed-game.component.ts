@@ -16,24 +16,39 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./speed-game.component.css'],
 })
 export class SpeedGameComponent implements OnInit, OnDestroy {
-  hand1: CardInfo[];
-  hand2: CardInfo[];
-  playL: CardInfo[];
-  playR: CardInfo[];
-  continueL: CardInfo[];
-  continueR: CardInfo[];
-  hand1Stack: CardInfo[];
-  hand2Stack: CardInfo[];
+  hand1: CardInfo[] = [];
+  hand2: CardInfo[] = [];
+  playL: CardInfo[] = [];
+  playR: CardInfo[] = [];
+  continueL: CardInfo[] = [];
+  continueR: CardInfo[] = [];
+  hand1Stack: CardInfo[] = [];
+  hand2Stack: CardInfo[] = [];
   name: FormControl = new FormControl();
   playerName: string = '';
+  player2Name: string = '';
   isPlayerOne: boolean = true;
 
   constructor(private signalr: SignalrService) {
     signalr.startConnection();
 
-    signalr.addHandler('MoveHandler', (user, card) => {
-      this.hand1.push(card);
-      console.log(user);
+    signalr.addHandler('MoveHandler', (data) => {
+      this.hand1 = data.hand2.map((c) => ({
+        suiteNumber: c.suiteNumber,
+        house: c.house,
+        faceUp: false,
+      }));;
+      this.hand2 = data.hand1.map((c) => ({
+        suiteNumber: c.suiteNumber,
+        house: c.house,
+        faceUp: true,
+      }));;
+      this.continueR = data.continueL;
+      this.continueL = data.continueR;
+      this.hand2Stack = data.hand1Stack;
+      this.hand1Stack = data.hand2Stack;
+      this.playR = data.playL;
+      this.playL = data.playR;    
     });
 
     signalr.addHandler('NewGame', (data) => {
@@ -52,6 +67,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         this.hand2Stack = data.playerTwoStack;
         this.playL = data.playL;
         this.playR = data.playR;
+        this.player2Name = data.players[1].userName;
       } else {
         this.isPlayerOne = false;
         this.hand2 = data.playerOneHand.map((c) => ({
@@ -66,6 +82,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         this.hand1Stack = data.playerTwoStack;
         this.playR = data.playL;
         this.playL = data.playR;
+        this.player2Name = data.players[0].userName;
       }
     });
   }
@@ -73,6 +90,10 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.signalr.disposeHandlers('MoveHandler');
     this.signalr.disposeHandlers('NewGame');
+  }
+
+  playcard() {
+    this.signalr.playCard({ hand1: this.hand1, hand2: this.hand2, playL: this.playL, playR: this.playR, continueL: this.continueL, continueR: this.continueR, hand1Stack: this.hand1Stack, hand2Stack: this.hand2Stack });
   }
 
   drop(event: CdkDragDrop<CardInfo[]>) {
@@ -83,6 +104,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, 0);
     } else {
+      event.previousContainer.data[event.previousIndex].faceUp = true; 
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -90,11 +112,23 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         0
       );
 
-      let card: CardInfo = this.hand2Stack[this.hand2Stack.length - 1];
-      card.faceUp = true;
-      this.hand2.push(card);
-      this.hand2Stack.pop();
-      //playCard(gamestate here);
+      //if (this.continueL.length == 0 && this.continueR.length == 0) {
+      //  while (this.playL.length == 1) {
+      //    this.continueL.push(this.playL[this.playL.length - 1]);
+      //    this.continueL.pop();
+      //  }
+      //}
+
+      let pelement = event.previousContainer.element.nativeElement.id;
+
+      if (pelement != "continueR" && pelement != "continueL") {
+        let card: CardInfo = this.hand2Stack[this.hand2Stack.length - 1];
+        card.faceUp = true;
+        this.hand2.push(card);
+        this.hand2Stack.pop();
+      } 
+
+      this.playcard();
     }
   }
 
@@ -104,6 +138,11 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     let pcontainer =
       event.previousContainer.data[event.previousIndex].suiteNumber;
     let element = event.container.element.nativeElement.id;
+    let pelement = event.previousContainer.element.nativeElement.id;
+
+    if (pelement == "continueR" || pelement == "continueL") {
+       return true;
+    }
 
     if (element == 'playL' || element == 'playR') {
       if (container + 1 === pcontainer) {
@@ -129,14 +168,6 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     this.playerName = this.name.value;
     this.signalr.newUser(this.name.value);
   }
-
-  // playCard() {
-  //   this.signalr.playCard('username', {
-  //     suiteNumber: 3,
-  //     house: House.Club,
-  //     faceUp: true,
-  //   });
-  // }
 
   matchPredicate(item: CdkDrag<number>) {
     return true;

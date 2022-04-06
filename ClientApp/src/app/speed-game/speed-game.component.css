@@ -19,18 +19,24 @@ div {
   padding: 5px;
   display: flex;
   flex-direction: column;
+  background-color: #1A1A1D;
+  width: 1296px;
 }
 
 .play {
   border: 1px solid black;
   display: flex;
   flex-direction: column;
+  background-color: #4E4E50;
+  width: 400px;
 }
 
 .continue {
   border: 1px solid black;
   display: flex;
   flex-direction: column;
+  background-color: #6F2232;
+  width: 400px;
 }
 
 .card {
@@ -51,6 +57,42 @@ div {
   color: #000000;
   font-family: "Roboto Slab", sans-serif;
 }
+
+.cdk-drag-placeholder {
+  visibility: hidden;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  min-width: 0px;
+  max-width: 0px;
+  min-height: 0px;
+  max-height: 0px;
+}
   
 .hand {
 }
+
+#playGame {
+    padding: 1%;
+    background-color: #4E4E50;
+}
+
+button {
+  background-color: #1A1A1D;
+  color: white;
+  font-size: large;
+  margin: 0.5%;
+}
+
+label {
+  font-size: x-large;
+  color: white;
+  margin: 1%;
+}
+
+.stack {
+    color: white;
+    margin: 10px 5px;
+    font-size: xx-large;
+}
+
