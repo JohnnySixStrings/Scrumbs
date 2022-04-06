@@ -29,8 +29,8 @@ public class SpeedHub : Hub
         var continueR = deck.GetRange(15,5);
         var playerOneStack = deck.GetRange(20, 15);
         var playerTwoStack = deck.GetRange(35, 15);
-        var playL = deck.GetRange(50, 1);
-        var playR = deck.GetRange(51, 1);
+        var playL = deck.GetRange(50, 1).Select(c => new Card{SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true});
+        var playR = deck.GetRange(51, 1).Select(c => new Card{SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true});
 
         await Clients.All.SendAsync("NewGame", new { PlayerOneHand = playerOneHand, PlayerTwoHand = playerTwoHand , ContinueL = continueL, ContinueR = continueR, PlayerOneStack = playerOneStack, PlayerTwoStack = playerTwoStack, PlayL = playL, PlayR = playR, players = playerData.players}, Context.ConnectionAborted);
     }

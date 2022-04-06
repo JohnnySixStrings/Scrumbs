@@ -84,6 +84,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
 
       this.hand2.push(this.hand2Stack[this.hand2Stack.length - 1]);
       this.hand2Stack.pop();
+      //playCard(gamestate here);
     }
  
   }
@@ -122,13 +123,13 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     this.signalr.newUser(this.name.value);
   }
 
-  playCard() {
-    this.signalr.playCard('bob', {
-      suiteNumber: 3,
-      house: House.Club,
-      faceUp: true,
-    });
-  }
+  // playCard() {
+  //   this.signalr.playCard('username', {
+  //     suiteNumber: 3,
+  //     house: House.Club,
+  //     faceUp: true,
+  //   });
+  // }
 
   matchPredicate(item: CdkDrag<number>) {
     return true;
