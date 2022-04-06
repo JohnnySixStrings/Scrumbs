@@ -1,5 +1,4 @@
-﻿using DataAnnotationsExtensions;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using Scrumbs.Models;
 using System.Text.Json;
 
@@ -91,9 +90,6 @@ public class SpeedHub : Hub
 }
 public class Card
 {
-    // Suite Suite { get; set; }
-    [Min(1)]
-    [Max(13)]
     public int SuiteNumber { get; set; }
     public House House { get; set; }
     public bool FaceUp { get; set; }
