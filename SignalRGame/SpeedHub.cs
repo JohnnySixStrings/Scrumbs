@@ -49,6 +49,33 @@ public class SpeedHub : Hub
         }
     }
 
+    public async Task Reset(Reset obj)
+    {
+        var stack = new List<Card>();
+        stack.AddRange(obj.PlayL);
+        stack.AddRange(obj.PlayR);
+        stack.AddRange(obj.ContinueL);
+        stack.AddRange(obj.ContinueR);
+
+        stack = stack.OrderBy(a => Guid.NewGuid()).ToList();
+        var continueL = stack.GetRange(0, 5).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = false }).ToList();
+        var continueR = stack.GetRange(5, 5).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = false }).ToList();
+        //var count = stack.GetRange(10, stack.Count - 10).Count;
+        var count = stack.Count - 10;
+
+        if (stack.Count % 2 == 0)
+        {
+            var playL = stack.GetRange(10, count / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
+            var playR = stack.GetRange(10 + count / 2, count / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
+            await Clients.All.SendAsync("ResetHandler", new Reset { ContinueL = continueL, ContinueR = continueR, PlayL = playL, PlayR = playR, IsPlayerOne = obj.IsPlayerOne });
+        } else
+        {
+            var playL = stack.GetRange(10, (count + 1) / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
+            var playR = stack.GetRange(10 + (count + 1) / 2, count - (count + 1) / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
+            await Clients.All.SendAsync("ResetHandler", new Reset { ContinueL = continueL, ContinueR = continueR, PlayL = playL, PlayR = playR, IsPlayerOne = obj.IsPlayerOne });
+        } 
+    }
+
     private static List<Card> NewDeck()
     {
         var cards = new List<Card>();
@@ -99,6 +126,16 @@ public class Game
     public string Name { get; set; }
     public IList<User> Players { get; set; }
     public IList<Card> OriginalDeck { get; set; }
+}
+
+public class Reset
+{
+    public IList<Card> PlayR { get; set; }
+    public IList<Card> PlayL { get; set; }
+    public IList<Card> ContinueL { get; set; }
+    public IList<Card> ContinueR { get; set; }
+
+    public bool IsPlayerOne { get; set; }
 }
 
 public class GameState

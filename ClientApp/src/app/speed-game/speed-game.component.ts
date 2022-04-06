@@ -85,11 +85,27 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         this.player2Name = data.players[0].userName;
       }
     });
+
+    signalr.addHandler('ResetHandler', (data) => {
+      if (this.isPlayerOne == data.isPlayerOne) {
+        this.continueR = data.continueR;
+        this.continueL = data.continueL;
+        this.playR = data.playR;
+        this.playL = data.playL;
+      } else {
+        this.continueR = data.continueL;
+        this.continueL = data.continueR;
+        this.playR = data.playL;
+        this.playL = data.playR;
+      }
+      
+    })
   }
 
   ngOnDestroy(): void {
     this.signalr.disposeHandlers('MoveHandler');
     this.signalr.disposeHandlers('NewGame');
+    this.signalr.disposeHandlers('ResetHandler');
   }
 
   playcard() {
@@ -111,13 +127,6 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         event.previousIndex,
         0
       );
-
-      //if (this.continueL.length == 0 && this.continueR.length == 0) {
-      //  while (this.playL.length == 1) {
-      //    this.continueL.push(this.playL[this.playL.length - 1]);
-      //    this.continueL.pop();
-      //  }
-      //}
 
       let pelement = event.previousContainer.element.nativeElement.id;
 
@@ -167,6 +176,10 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   newUser() {
     this.playerName = this.name.value;
     this.signalr.newUser(this.name.value);
+  }
+
+  reset() {
+    this.signalr.reset({ continueL: this.continueL, continueR: this.continueR, playL: this.playL, playR: this.playR, isPlayerOne: this.isPlayerOne});
   }
 
   matchPredicate(item: CdkDrag<number>) {

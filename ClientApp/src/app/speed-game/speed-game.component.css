@@ -7,7 +7,7 @@ div {
   display: flex;
   flex-direction: column;
 }
-  
+
 .middle {
   display: flex;
   flex-direction: row;
@@ -15,12 +15,13 @@ div {
 }
 
 .player {
-  border: 1px solid black;
+  /*border: 1px solid black;
   padding: 5px;
   display: flex;
-  flex-direction: column;
-  background-color: #1A1A1D;
   width: 1296px;
+  flex-direction: column;*/
+  background-color: #1A1A1D;
+  padding: 10px;
 }
 
 .play {
