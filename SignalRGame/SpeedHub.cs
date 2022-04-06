@@ -7,6 +7,13 @@ namespace Scrumbs.SignalRGame;
 
 public class SpeedHub : Hub
 {
+    private PlayersContext playerData;
+
+    public SpeedHub(PlayersContext data)
+    {
+        playerData = data;
+    }
+
     public async Task PlayCard(string user, Card card) {
         Console.WriteLine(Context.ConnectionId);
         await Clients.AllExcept(Context.ConnectionId).SendAsync("MoveHandler", user, card, Context.ConnectionAborted);
@@ -25,12 +32,19 @@ public class SpeedHub : Hub
         var playL = deck.GetRange(50, 1);
         var playR = deck.GetRange(51, 1);
 
-        await Clients.All.SendAsync("NewGame", new { PlayerOneHand = playerOneHand, PlayerTwoHand = playerTwoHand , ContinueL = continueL, ContinueR = continueR, PlayerOneStack = playerOneStack, PlayerTwoStack = playerTwoStack, PlayL = playL, PlayR = playR}, Context.ConnectionAborted);
+        await Clients.All.SendAsync("NewGame", new { PlayerOneHand = playerOneHand, PlayerTwoHand = playerTwoHand , ContinueL = continueL, ContinueR = continueR, PlayerOneStack = playerOneStack, PlayerTwoStack = playerTwoStack, PlayL = playL, PlayR = playR, players = playerData.players}, Context.ConnectionAborted);
     }
-    public async Task Test()
+    public async Task NewUser(string UserName)
     {
-        Console.WriteLine(Context.ConnectionId);
+        var connenctions = playerData.players.Select(p => p.ConnectionId).ToList();
+        
+        if(connenctions.Contains(Context.ConnectionId)){
+            playerData.players[connenctions.IndexOf(Context.ConnectionId)].UserName = UserName;
+        } else {
+            playerData.players.Add(new User{UserName = UserName, ConnectionId = Context.ConnectionId});
+        }
     }
+
     private static List<Card> NewDeck()
     {
         var cards = new List<Card>();

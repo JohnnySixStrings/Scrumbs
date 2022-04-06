@@ -3,7 +3,7 @@ using Scrumbs.SignalRGame;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddSingleton<PlayersContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", builder => {

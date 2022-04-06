@@ -2,6 +2,6 @@
 
 public class User
 {
-    public int ConnectionId { get; set; }
+    public string ConnectionId { get; set; }
     public string UserName { get; set; }
 }

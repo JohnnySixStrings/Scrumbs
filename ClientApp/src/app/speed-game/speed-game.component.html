@@ -75,4 +75,13 @@
 
 <button btn btn-primary (click)="newGame()">Play</button>
 <button btn btn-primary (click)="playCard()">Play Card</button>
-<button btn btn-primary (click)="test()">Test</button>
+<br><br>
+
+<label for="name">Name: </label>
+<input type="text" [formControl]="name" id="userInput" value="Joe">
+<button btn btn-primary (click)="newUser()">New User</button>
+
+<p>{{playerName}}</p>
+<p>{{hand1Stack.length}}</p>
+
+<div *ngIf="isPlayerOne" {{hand1Stack.length}}></div>
