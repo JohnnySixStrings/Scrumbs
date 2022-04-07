@@ -136,8 +136,11 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         this.hand2.push(card);
         this.hand2Stack.pop();
       } 
-
       this.playcard();
+    }
+
+    if (this.check()) {
+      this.reset();
     }
   }
 
@@ -180,6 +183,34 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
 
   reset() {
     this.signalr.reset({ continueL: this.continueL, continueR: this.continueR, playL: this.playL, playR: this.playR, isPlayerOne: this.isPlayerOne});
+  }
+
+  check() {
+
+    if (this.continueL.length === 0 && this.continueR.length === 0) {
+
+      for (let i = 0; i < this.hand1.length; i++) {
+
+        if (this.hand1[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
+          this.hand1[i].suiteNumber == this.playL[0].suiteNumber - 1 ||
+          this.hand1[i].suiteNumber == this.playR[0].suiteNumber + 1 ||
+          this.hand1[i].suiteNumber == this.playR[0].suiteNumber - 1) {
+          return false;
+        }
+      }
+
+      for (let i = 0; i < this.hand2.length; i++) {
+
+        if (this.hand2[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
+          this.hand2[i].suiteNumber == this.playL[0].suiteNumber - 1 ||
+          this.hand2[i].suiteNumber == this.playR[0].suiteNumber + 1 ||
+          this.hand2[i].suiteNumber == this.playR[0].suiteNumber - 1) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
   }
 
   matchPredicate(item: CdkDrag<number>) {
