@@ -35,10 +35,9 @@ export class SignalrService {
       .catch((err) => console.log(`Error with play card: ${err}`));
   }
 
-  public reset(data: any) {
-    this.hubConnection
-      .send('Reset', data)
-      .catch((err) => console.log(`Error with play card: ${err}`));
+  public async reset(data: any) {
+    let result = await this.hubConnection.invoke('Reset', data);
+    // .catch((err) => console.log(`Error with play card: ${err}`));
   }
 
   public newGame() {

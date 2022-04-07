@@ -28,6 +28,8 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   playerName: string = '';
   player2Name: string = '';
   isPlayerOne: boolean = true;
+  isPlayerNameSet: boolean = false;
+  gameState: GameState = GameState.Setup;
 
   isPlayerWilling: boolean = true;
   isGameOver: boolean = false;
@@ -53,10 +55,15 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
       this.hand1Stack = data.hand2Stack;
       this.playR = data.playL;
       this.playL = data.playR;
+      if (this.hand1Stack.length == 0 && this.hand1.length == 0) {
+        this.gameState == GameState.Lost;
+      } else if (this.hand2Stack.length == 0 && this.hand2.length == 0) {
+        this.gameState == GameState.Won;
+      }
     });
 
     signalr.addHandler('NewGame', (data) => {
-      this.isGameStarted = true;
+      this.gameState = GameState.Running;
       let connectionID = this.signalr.getConnectionId();
       if (connectionID == data.players[0].connectionId) {
         this.isPlayerOne = true;
@@ -107,7 +114,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   playMySongBaby() {
-    this.songPlayer.play();
+    //this.songPlayer.play();
   }
 
   ngOnDestroy(): void {
@@ -129,7 +136,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     });
   }
 
-  drop(event: CdkDragDrop<CardInfo[]>) {
+  async drop(event: CdkDragDrop<CardInfo[]>) {
     if (!this.isValidPlay(event)) {
       return;
     }
@@ -154,7 +161,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
 
       while (this.check()) {
         if (this.continueL.length === 0 || this.continueR.length === 0) {
-          this.reset();
+          await this.reset();
         } else {
           let l = this.continueL.pop();
           let r = this.continueR.pop();
@@ -170,11 +177,11 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
       this.playcard();
     }
 
-    if (this.hand2Stack.length == 0 && this.hand2.length == 0) {
-      this.isGameOver = true;
-      this.isGameStarted = false;
+    if (this.hand1Stack.length == 0 && this.hand1.length == 0) {
+      this.gameState == GameState.Lost;
+    } else if (this.hand2Stack.length == 0 && this.hand2.length == 0) {
+      this.gameState == GameState.Won;
     }
-
   }
 
   isValidPlay(event: CdkDragDrop<CardInfo[]>) {
@@ -217,11 +224,12 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
 
   newUser() {
     this.playerName = this.name.value;
+    this.isPlayerNameSet = true;
     this.signalr.newUser(this.name.value);
   }
 
-  reset() {
-    this.signalr.reset({
+  async reset() {
+    await this.signalr.reset({
       continueL: this.continueL,
       continueR: this.continueR,
       playL: this.playL,
@@ -231,7 +239,6 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   check() {
-
     for (let i = 0; i < this.hand1.length; i++) {
       if (
         this.hand1[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
@@ -240,16 +247,17 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         this.hand1[i].suiteNumber == this.playR[0].suiteNumber - 1
       ) {
         return false;
-      }
-      else if (
-        (this.hand1[i].suiteNumber == 13 && this.playL[0].suiteNumber == 1) || (this.hand1[i].suiteNumber == 13 && this.playR[0].suiteNumber == 1)) {
+      } else if (
+        (this.hand1[i].suiteNumber == 13 && this.playL[0].suiteNumber == 1) ||
+        (this.hand1[i].suiteNumber == 13 && this.playR[0].suiteNumber == 1)
+      ) {
+        return false;
+      } else if (
+        (this.hand1[i].suiteNumber == 1 && this.playL[0].suiteNumber == 13) ||
+        (this.hand1[i].suiteNumber == 1 && this.playR[0].suiteNumber == 13)
+      ) {
         return false;
       }
-      else if (
-        (this.hand1[i].suiteNumber == 1 && this.playL[0].suiteNumber == 13) || (this.hand1[i].suiteNumber == 1 && this.playR[0].suiteNumber == 13)) {
-        return false;
-      }
-
     }
 
     for (let i = 0; i < this.hand2.length; i++) {
@@ -260,13 +268,15 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         this.hand2[i].suiteNumber == this.playR[0].suiteNumber - 1
       ) {
         return false;
-      }
-      else if (
-        (this.hand2[i].suiteNumber == 13 && this.playL[0].suiteNumber == 1) || (this.hand2[i].suiteNumber == 13 && this.playR[0].suiteNumber == 1)) {
+      } else if (
+        (this.hand2[i].suiteNumber == 13 && this.playL[0].suiteNumber == 1) ||
+        (this.hand2[i].suiteNumber == 13 && this.playR[0].suiteNumber == 1)
+      ) {
         return false;
-      }
-      else if (
-        (this.hand2[i].suiteNumber == 1 && this.playL[0].suiteNumber == 13) || (this.hand2[i].suiteNumber == 1 && this.playR[0].suiteNumber == 13)) {
+      } else if (
+        (this.hand2[i].suiteNumber == 1 && this.playL[0].suiteNumber == 13) ||
+        (this.hand2[i].suiteNumber == 1 && this.playR[0].suiteNumber == 13)
+      ) {
         return false;
       }
     }
@@ -296,9 +306,14 @@ export enum House {
   Club,
   Diamond,
 }
-
+export enum GameState {
+  Running,
+  Won,
+  Lost,
+  Setup,
+}
 //todo
 // Tested for mobile, cards get too big when theres less than 5 cards in a players hand
 // Bug with the while loop - closes the app
 // game win lost screen
-// only displays on one side at the end of the game, something with bool isGameStarted 
+// only displays on one side at the end of the game, something with bool isGameStarted

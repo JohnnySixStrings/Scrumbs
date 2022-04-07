@@ -1,7 +1,7 @@
-<div class="board" *ngIf="isGameStarted">
+<div class="board" *ngIf="gameState == 0">
   <div id="hand1" class="player">
     <div class="stack">
-      <p>{{ hand1Stack?.length }} {{ player2Name }}</p>
+      <p>{{ hand1Stack?.length + hand1?.length }} {{ player2Name }}</p>
     </div>
     <div class="middle">
       <app-cards *ngFor="let card of hand1" [cardInfo]="card"></app-cards>
@@ -84,16 +84,40 @@
     </div>
 
     <div class="stack">
-      <p>{{ playerName }} has {{ hand2Stack?.length }} cards left</p>
+      <p>
+        {{ playerName }} has {{ hand2Stack?.length + hand1?.length }} cards left
+      </p>
     </div>
   </div>
 </div>
+<ng-container *ngIf="gameState == 1">
+  <div>
+    <h1>{{ playerName }} You have won!</h1>
+  </div>
+</ng-container>
+<ng-container *ngIf="gameState == 2">
+  <div>
+    <h1>{{ playerName }} You have lost!</h1>
+  </div>
+</ng-container>
 
 <div id="playGame">
-  <label for="name">Name: </label>
-  <input type="text" [formControl]="name" id="userInput" value="Joe" />
-  <button btn btn-primary (click)="newUser()">New User</button>
-  <br />
-  <button btn btn-primary (click)="newGame()">Play Game!</button>
-  <button btn btn-primary (click)="playAgain()" *ngIf="isGameOver" >Play a rematch!</button>
+  <ng-container *ngIf="gameState == 3">
+    <label for="name">Name: </label>
+    <input type="text" [formControl]="name" id="userInput" value="Joe" />
+    <button btn btn-primary (click)="newUser()">New User</button>
+    <br />
+
+    <button *ngIf="isPlayerNameSet" btn btn-primary (click)="newGame()">
+      Play Game!
+    </button>
+  </ng-container>
+  <button
+    btn
+    btn-primary
+    (click)="playAgain()"
+    *ngIf="gameState == 1 || gameState == 2"
+  >
+    Play a rematch!
+  </button>
 </div>
