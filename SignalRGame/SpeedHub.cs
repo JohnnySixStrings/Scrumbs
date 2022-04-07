@@ -7,7 +7,7 @@ namespace Scrumbs.SignalRGame;
 public class SpeedHub : Hub
 {
     private PlayersContext playerData;
-
+    private Dictionary<string, bool> IsWillingDict = new Dictionary<string, bool>();
     public SpeedHub(PlayersContext data)
     {
         playerData = data;
@@ -47,34 +47,13 @@ public class SpeedHub : Hub
             playerData.players.Add(new User { UserName = UserName, ConnectionId = Context.ConnectionId });
         }
     }
-
-    public async Task Reset(Reset obj)
+    public async Task playAgain(string userName, bool isWilling)
     {
-        var stack = new List<Card>();
-        stack.AddRange(obj.PlayL);
-        stack.AddRange(obj.PlayR);
-        stack.AddRange(obj.ContinueL);
-        stack.AddRange(obj.ContinueR);
-
-        stack = stack.OrderBy(a => Guid.NewGuid()).ToList();
-        var continueL = stack.GetRange(0, 5).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = false }).ToList();
-        var continueR = stack.GetRange(5, 5).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = false }).ToList();
-        //var count = stack.GetRange(10, stack.Count - 10).Count;
-        var count = stack.Count - 10;
-
-        if (stack.Count % 2 == 0)
-        {
-            var playL = stack.GetRange(10, count / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
-            var playR = stack.GetRange(10 + count / 2, count / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
-            await Clients.All.SendAsync("ResetHandler", new Reset { ContinueL = continueL, ContinueR = continueR, PlayL = playL, PlayR = playR, IsPlayerOne = obj.IsPlayerOne });
-        } else
-        {
-            var playL = stack.GetRange(10, (count + 1) / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
-            var playR = stack.GetRange(10 + (count + 1) / 2, count - (count + 1) / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
-            await Clients.All.SendAsync("ResetHandler", new Reset { ContinueL = continueL, ContinueR = continueR, PlayL = playL, PlayR = playR, IsPlayerOne = obj.IsPlayerOne });
-        } 
+        IsWillingDict.TryAdd(userName, isWilling);
+        if(IsWillingDict.Where(p => p.Value == true).Count() > 1){
+            await NewGame();
+        }
     }
-
     private static List<Card> NewDeck()
     {
         var cards = new List<Card>();

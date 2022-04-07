@@ -1,6 +1,6 @@
 <div class="board">
-  <div id="hand1"
-       class="player">
+  
+  <div id="hand1" class="player">
     <div class="stack">
       <p>{{hand1Stack?.length}} {{player2Name}}</p>
     </div>
@@ -11,7 +11,7 @@
   </div>
 
   <div class="middle">
-    <div id="continueL"class="continue contL" cdkDropList [cdkDropListData]="continueL" [cdkDropListConnectedTo]="[playableLeft]">
+    <div id="continueL" class="continue contL" cdkDropList [cdkDropListData]="continueL" [cdkDropListConnectedTo]="[playableLeft]">
       <ng-container *ngFor="let card of continueL; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="stack">
-      <p>{{hand2Stack?.length}} {{playerName}} </p>
+      <p>{{playerName}} has {{hand2Stack?.length}} cards left</p>
     </div>
     
   </div>
@@ -79,7 +79,6 @@
   <button btn btn-primary (click)="newUser()">New User</button>
   <br>
   <button btn btn-primary (click)="newGame()">Play Game!</button>
+  <button btn btn-primary (click)="playAgain()">Play a rematch!</button>
 </div>
-<!-- <button btn btn-primary (click)="playCard()">Play Card</button> -->
 
-<!--<div *ngIf="isPlayerOne" {{hand1Stack?.length}}></div>-->

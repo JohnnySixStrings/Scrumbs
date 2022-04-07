@@ -47,6 +47,12 @@ export class SignalrService {
       .catch((err) => console.log(`Error with test: ${err}`));
   }
 
+  public playAgain(userName: string, willing: boolean) {
+    this.hubConnection
+      .send('PlayAgain', userName, willing)
+      .catch((err) => console.log(`Error with PlayAgain: ${err}`));
+  }
+
   public newUser(userName: string) {
     this.hubConnection
       .send('NewUser', userName)
