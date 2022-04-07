@@ -17,7 +17,7 @@
       [cdkDropListConnectedTo]="[playableLeft]"
     >
       <ng-container *ngFor="let card of continueL; first as isFirst">
-        <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
+        <app-cards *ngIf="isFirst" [cardInfo]="card"></app-cards>
       </ng-container>
     </div>
 
@@ -61,7 +61,7 @@
       [cdkDropListConnectedTo]="[playableRight]"
     >
       <ng-container *ngFor="let card of continueR; first as isFirst">
-        <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
+        <app-cards *ngIf="isFirst" [cardInfo]="card"></app-cards>
       </ng-container>
     </div>
   </div>

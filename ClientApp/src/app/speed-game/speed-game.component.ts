@@ -152,7 +152,14 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     }
 
     if (this.check()) {
-      this.reset();
+      if (this.continueL.length === 0 && this.continueR.length === 0) {
+        this.reset();
+      } else if (this.continueL.length !== 0 || this.continueR.length !== 0) {
+        this.playL.push(this.continueL[this.continueR.length - 1]);
+        this.continueL.pop();
+        this.playR.push(this.continueR[this.continueR.length - 1]);
+        this.continueR.pop();
+      } 
     }
   }
 
@@ -208,34 +215,49 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   check() {
-    if (this.continueL.length === 0 && this.continueR.length === 0) {
-      for (let i = 0; i < this.hand1.length; i++) {
-        if (
-          this.hand1[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
-          this.hand1[i].suiteNumber == this.playL[0].suiteNumber - 1 ||
-          this.hand1[i].suiteNumber == this.playR[0].suiteNumber + 1 ||
-          this.hand1[i].suiteNumber == this.playR[0].suiteNumber - 1
-        ) {
-          return false;
-        }
+
+    for (let i = 0; i < this.hand1.length; i++) {
+      if (
+        this.hand1[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
+        this.hand1[i].suiteNumber == this.playL[0].suiteNumber - 1 ||
+        this.hand1[i].suiteNumber == this.playR[0].suiteNumber + 1 ||
+        this.hand1[i].suiteNumber == this.playR[0].suiteNumber - 1
+      ) {
+        return false;
+      }
+      else if (
+        (this.hand1[i].suiteNumber == 13 && this.playL[0].suiteNumber == 1) || (this.hand1[i].suiteNumber == 13 && this.playR[0].suiteNumber == 1)) {
+        return false;
+      }
+      else if (
+        (this.hand1[i].suiteNumber == 1 && this.playL[0].suiteNumber == 13) || (this.hand1[i].suiteNumber == 1 && this.playR[0].suiteNumber == 13)) {
+        return false;
       }
 
-      for (let i = 0; i < this.hand2.length; i++) {
-        if (
-          this.hand2[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
-          this.hand2[i].suiteNumber == this.playL[0].suiteNumber - 1 ||
-          this.hand2[i].suiteNumber == this.playR[0].suiteNumber + 1 ||
-          this.hand2[i].suiteNumber == this.playR[0].suiteNumber - 1
-        ) {
-          return false;
-        }
-      }
-      return true;
     }
-    return false;
+
+    for (let i = 0; i < this.hand2.length; i++) {
+      if (
+        this.hand2[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
+        this.hand2[i].suiteNumber == this.playL[0].suiteNumber - 1 ||
+        this.hand2[i].suiteNumber == this.playR[0].suiteNumber + 1 ||
+        this.hand2[i].suiteNumber == this.playR[0].suiteNumber - 1
+      ) {
+        return false;
+      }
+      else if (
+        (this.hand2[i].suiteNumber == 13 && this.playL[0].suiteNumber == 1) || (this.hand2[i].suiteNumber == 13 && this.playR[0].suiteNumber == 1)) {
+        return false;
+      }
+      else if (
+        (this.hand2[i].suiteNumber == 1 && this.playL[0].suiteNumber == 13) || (this.hand2[i].suiteNumber == 1 && this.playR[0].suiteNumber == 13)) {
+        return false;
+      }
+    }
+    return true;
   }
 
-  matchPredicate(item: CdkDrag<number>) {
+  matchPredicate(item: CdkDrag<CardInfo>) {
     return true;
   }
 
