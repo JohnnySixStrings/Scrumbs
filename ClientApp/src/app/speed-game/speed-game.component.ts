@@ -157,10 +157,10 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
 
       while (this.check()) {
         if (this.hand1Stack.length == 0 && this.hand1.length == 0) {
-          this.gameState == GameState.Lost;
+          this.gameState = GameState.Lost;
           break;
         } else if (this.hand2Stack.length == 0 && this.hand2.length == 0) {
-          this.gameState == GameState.Won;
+          this.gameState = GameState.Won;
           break;
         }
         if (this.continueL.length === 0 || this.continueR.length === 0) {
@@ -182,9 +182,9 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
   updateGameState() {
     if (this.hand1Stack.length == 0 && this.hand1.length == 0) {
-      this.gameState == GameState.Lost;
+      this.gameState = GameState.Lost;
     } else if (this.hand2Stack.length == 0 && this.hand2.length == 0) {
-      this.gameState == GameState.Won;
+      this.gameState = GameState.Won;
     }
   }
   isValidPlay(event: CdkDragDrop<CardInfo[]>) {

@@ -103,10 +103,13 @@
 
 <div id="playGame">
   <ng-container *ngIf="gameState == 3">
-    <label for="name">Name: </label>
-    <input type="text" [formControl]="name" id="userInput" value="Joe" />
-    <button btn btn-primary (click)="newUser()">New User</button>
-    <br />
+    <ng-container *ngIf="!isPlayerNameSet">
+      <label for="name">Name: </label>
+      <input type="text" [formControl]="name" id="userInput" value="Joe" />
+
+      <button btn btn-primary (click)="newUser()">New User</button>
+      <br />
+    </ng-container>
 
     <button *ngIf="isPlayerNameSet" btn btn-primary (click)="newGame()">
       Play Game!
