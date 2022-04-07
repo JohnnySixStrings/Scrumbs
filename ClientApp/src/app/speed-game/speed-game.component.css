@@ -68,9 +68,6 @@ div {
   max-height: 0px;
 }
 
-.hand {
-}
-
 #playGame {
   padding: 1%;
   background-color: #4e4e50;
@@ -93,4 +90,22 @@ label {
   color: white;
   margin: 5px 10px;
   font-size: xx-large;
+}
+
+@media screen and (max-device-width: 500px) {
+  div#hand1.player {
+    width:100%;
+    min-height: 12.5em;
+  }
+  .middle{
+    min-height: 12.5em;
+
+  }
+  div#hand2.player {
+    width:100%;
+    min-height: 12.5em;
+  }
+  div#hand1.player.card{
+    transform: scale(2);
+  }
 }
