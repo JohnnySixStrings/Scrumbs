@@ -18,6 +18,7 @@ public class SpeedHub : Hub
         Console.WriteLine(Context.ConnectionId);
         await Clients.AllExcept(Context.ConnectionId).SendAsync("MoveHandler", obj, Context.ConnectionAborted);
     }
+
     public async Task NewGame()
     {
         Console.WriteLine(Context.ConnectionId);
@@ -34,6 +35,7 @@ public class SpeedHub : Hub
 
         await Clients.All.SendAsync("NewGame", new { PlayerOneHand = playerOneHand, PlayerTwoHand = playerTwoHand, ContinueL = continueL, ContinueR = continueR, PlayerOneStack = playerOneStack, PlayerTwoStack = playerTwoStack, PlayL = playL, PlayR = playR, players = playerData.players }, Context.ConnectionAborted);
     }
+
     public void NewUser(string UserName)
     {
         var connenctions = playerData.players.Select(p => p.ConnectionId).ToList();
@@ -47,6 +49,7 @@ public class SpeedHub : Hub
             playerData.players.Add(new User { UserName = UserName, ConnectionId = Context.ConnectionId });
         }
     }
+
     public async Task playAgain(string userName, bool isWilling)
     {
         IsWillingDict.TryAdd(userName, isWilling);
@@ -54,6 +57,35 @@ public class SpeedHub : Hub
             await NewGame();
         }
     }
+
+    public async Task Reset(Reset obj)
+    {
+        var stack = new List<Card>();
+        stack.AddRange(obj.PlayL);
+        stack.AddRange(obj.PlayR);
+        stack.AddRange(obj.ContinueL);
+        stack.AddRange(obj.ContinueR);
+
+        stack = stack.OrderBy(a => Guid.NewGuid()).ToList();
+        var continueL = stack.GetRange(0, 5).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = false }).ToList();
+        var continueR = stack.GetRange(5, 5).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = false }).ToList();
+        //var count = stack.GetRange(10, stack.Count - 10).Count;
+        var count = stack.Count - 10;
+
+        if (stack.Count % 2 == 0)
+        {
+            var playL = stack.GetRange(10, count / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
+            var playR = stack.GetRange(10 + count / 2, count / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
+            await Clients.All.SendAsync("ResetHandler", new Reset { ContinueL = continueL, ContinueR = continueR, PlayL = playL, PlayR = playR, IsPlayerOne = obj.IsPlayerOne });
+        }
+        else
+        {
+            var playL = stack.GetRange(10, (count + 1) / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
+            var playR = stack.GetRange(10 + (count + 1) / 2, count - (count + 1) / 2).Select(c => new Card { SuiteNumber = c.SuiteNumber, House = c.House, FaceUp = true }).ToList();
+            await Clients.All.SendAsync("ResetHandler", new Reset { ContinueL = continueL, ContinueR = continueR, PlayL = playL, PlayR = playR, IsPlayerOne = obj.IsPlayerOne });
+        }
+    }
+
     private static List<Card> NewDeck()
     {
         var cards = new List<Card>();
@@ -67,12 +99,14 @@ public class SpeedHub : Hub
         return cards.OrderBy(a => Guid.NewGuid()).ToList();
     }
 }
+
 public class Card
 {
     public int SuiteNumber { get; set; }
     public House House { get; set; }
     public bool FaceUp { get; set; }
 }
+
 public enum House
 {
     Heart,
@@ -80,6 +114,7 @@ public enum House
     Club,
     Diamond
 }
+
 public enum Suite
 {
     Ace = 1,
@@ -96,6 +131,7 @@ public enum Suite
     Queen = 12,
     King = 13,
 }
+
 public class Game
 {
     public string Name { get; set; }

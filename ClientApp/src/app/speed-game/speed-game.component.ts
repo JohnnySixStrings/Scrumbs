@@ -29,7 +29,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   player2Name: string = '';
   isPlayerOne: boolean = true;
   isPlayerNameSet: boolean = false;
-  gameState: GameState = GameState.Setup;
+  gameState: number = GameState.Setup;
 
   isPlayerWilling: boolean = true;
   isGameOver: boolean = false;
@@ -55,11 +55,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
       this.hand1Stack = data.hand2Stack;
       this.playR = data.playL;
       this.playL = data.playR;
-      if (this.hand1Stack.length == 0 && this.hand1.length == 0) {
-        this.gameState == GameState.Lost;
-      } else if (this.hand2Stack.length == 0 && this.hand2.length == 0) {
-        this.gameState == GameState.Won;
-      }
+      this.updateGameState();
     });
 
     signalr.addHandler('NewGame', (data) => {
@@ -160,6 +156,13 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
       }
 
       while (this.check()) {
+        if (this.hand1Stack.length == 0 && this.hand1.length == 0) {
+          this.gameState == GameState.Lost;
+          break;
+        } else if (this.hand2Stack.length == 0 && this.hand2.length == 0) {
+          this.gameState == GameState.Won;
+          break;
+        }
         if (this.continueL.length === 0 || this.continueR.length === 0) {
           await this.reset();
         } else {
@@ -173,17 +176,17 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
           this.playR.unshift(r);
         }
       }
-
+      this.updateGameState();
       this.playcard();
     }
-
+  }
+  updateGameState() {
     if (this.hand1Stack.length == 0 && this.hand1.length == 0) {
       this.gameState == GameState.Lost;
     } else if (this.hand2Stack.length == 0 && this.hand2.length == 0) {
       this.gameState == GameState.Won;
     }
   }
-
   isValidPlay(event: CdkDragDrop<CardInfo[]>) {
     let valid: boolean = false;
     let container = event.container.data[0].suiteNumber;
