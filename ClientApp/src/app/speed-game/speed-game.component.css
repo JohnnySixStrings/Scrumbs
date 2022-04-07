@@ -6,6 +6,7 @@ div {
 .board {
   display: flex;
   flex-direction: column;
+  border: 1px #6F2232 ;
 }
   
 .middle {
@@ -15,12 +16,7 @@ div {
 }
 
 .player {
-  border: 1px solid black;
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
   background-color: #1A1A1D;
-  width: 1296px;
 }
 
 .play {
@@ -29,6 +25,8 @@ div {
   flex-direction: column;
   background-color: #4E4E50;
   width: 400px;
+  padding: .5em;
+  justify-content: center;
 }
 
 .continue {
@@ -37,6 +35,8 @@ div {
   flex-direction: column;
   background-color: #6F2232;
   width: 400px;
+  padding: .5em;
+  justify-content: center;
 }
 
 .card {
@@ -49,13 +49,6 @@ div {
 
 .card:hover {
   outline: 3px solid #e23314;
-}
-  
-.heading {
-  padding: 1em 0;
-  font-weight: bolder;
-  color: #000000;
-  font-family: "Roboto Slab", sans-serif;
 }
 
 .cdk-drag-placeholder {
@@ -70,6 +63,7 @@ div {
 }
   
 .hand {
+  
 }
 
 #playGame {
@@ -92,7 +86,7 @@ label {
 
 .stack {
     color: white;
-    margin: 10px 5px;
+    margin: 5px 10px;
     font-size: xx-large;
 }
 

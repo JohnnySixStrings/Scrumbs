@@ -8,7 +8,7 @@ namespace Scrumbs.SignalRGame;
 public class SpeedHub : Hub
 {
     private PlayersContext playerData;
-
+    private Dictionary<string, bool> IsWillingDict = new Dictionary<string, bool>();
     public SpeedHub(PlayersContext data)
     {
         playerData = data;
@@ -48,7 +48,13 @@ public class SpeedHub : Hub
             playerData.players.Add(new User { UserName = UserName, ConnectionId = Context.ConnectionId });
         }
     }
-
+    public async Task playAgain(string userName, bool isWilling)
+    {
+        IsWillingDict.TryAdd(userName, isWilling);
+        if(IsWillingDict.Where(p => p.Value == true).Count() > 1){
+            await NewGame();
+        }
+    }
     private static List<Card> NewDeck()
     {
         var cards = new List<Card>();

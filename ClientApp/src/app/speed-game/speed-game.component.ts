@@ -28,6 +28,10 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   playerName: string = '';
   player2Name: string = '';
   isPlayerOne: boolean = true;
+  
+  isPlayerWilling: boolean = true;
+  isGameOver: boolean = false;
+  isGameWon: boolean;
 
   constructor(private signalr: SignalrService) {
     signalr.startConnection();
@@ -162,6 +166,10 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
 
   newGame() {
     this.signalr.newGame();
+  }
+
+  playAgain() {
+    this.signalr.playAgain(this.playerName, this.isPlayerWilling)
   }
 
   newUser() {
