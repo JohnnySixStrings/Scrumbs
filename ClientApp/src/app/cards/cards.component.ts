@@ -12,7 +12,6 @@ export class CardsComponent implements OnInit {
   cardInfo!: CardInfo;
 
   ngOnInit(): void {
-    console.log(this.cardInfo);
     this.cardInfo.suiteNumber;
     if (this.cardInfo.faceUp) {
       this.cardImgUrl = `../../assets/cardImages/${

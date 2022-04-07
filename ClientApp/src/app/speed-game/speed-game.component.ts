@@ -32,7 +32,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   isPlayerWilling: boolean = true;
   isGameOver: boolean = false;
   isGameWon: boolean;
-
+  songPlayer: HTMLAudioElement = new Audio('../../assets/sounds/game.mp3');
   constructor(private signalr: SignalrService) {
     signalr.startConnection();
 
@@ -105,6 +105,10 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     });
   }
 
+  playMySongBaby() {
+    this.songPlayer.play();
+  }
+
   ngOnDestroy(): void {
     this.signalr.disposeHandlers('MoveHandler');
     this.signalr.disposeHandlers('NewGame');
@@ -142,7 +146,11 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
 
       let pelement = event.previousContainer.element.nativeElement.id;
 
-      if (pelement != 'continueR' && pelement != 'continueL') {
+      if (
+        pelement != 'continueR' &&
+        pelement != 'continueL' &&
+        this.hand2Stack.length != 0
+      ) {
         let card: CardInfo = this.hand2Stack[this.hand2Stack.length - 1];
         card.faceUp = true;
         this.hand2.push(card);
@@ -192,6 +200,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   newGame() {
+    this.playMySongBaby();
     this.signalr.newGame();
   }
 
