@@ -31,7 +31,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
 
   isPlayerWilling: boolean = true;
   isGameOver: boolean = false;
-  isGameWon: boolean;
+  isGameStarted: boolean = false;
   songPlayer: HTMLAudioElement = new Audio('../../assets/sounds/game.mp3');
   constructor(private signalr: SignalrService) {
     signalr.startConnection();
@@ -56,6 +56,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     });
 
     signalr.addHandler('NewGame', (data) => {
+      this.isGameStarted = true;
       let connectionID = this.signalr.getConnectionId();
       if (connectionID == data.players[0].connectionId) {
         this.isPlayerOne = true;
@@ -144,31 +145,36 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         0
       );
 
-      let pelement = event.previousContainer.element.nativeElement.id;
-
-      if (
-        pelement != 'continueR' &&
-        pelement != 'continueL' &&
-        this.hand2Stack.length != 0
-      ) {
+      if (this.hand2Stack.length != 0) {
         let card: CardInfo = this.hand2Stack[this.hand2Stack.length - 1];
         card.faceUp = true;
         this.hand2.push(card);
         this.hand2Stack.pop();
       }
+
+      while (this.check()) {
+        if (this.continueL.length === 0 || this.continueR.length === 0) {
+          this.reset();
+        } else {
+          let l = this.continueL.pop();
+          let r = this.continueR.pop();
+
+          l.faceUp = true;
+          r.faceUp = true;
+
+          this.playL.unshift(l);
+          this.playR.unshift(r);
+        }
+      }
+
       this.playcard();
     }
 
-    if (this.check()) {
-      if (this.continueL.length === 0 && this.continueR.length === 0) {
-        this.reset();
-      } else if (this.continueL.length !== 0 || this.continueR.length !== 0) {
-        this.playL.push(this.continueL[this.continueR.length - 1]);
-        this.continueL.pop();
-        this.playR.push(this.continueR[this.continueR.length - 1]);
-        this.continueR.pop();
-      } 
+    if (this.hand2Stack.length == 0 && this.hand2.length == 0) {
+      this.isGameOver = true;
+      this.isGameStarted = false;
     }
+
   }
 
   isValidPlay(event: CdkDragDrop<CardInfo[]>) {
@@ -200,6 +206,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   newGame() {
+    this.isGameOver = false;
     this.playMySongBaby();
     this.signalr.newGame();
   }
@@ -291,7 +298,7 @@ export enum House {
 }
 
 //todo
-// layout shifting on drag/drop
-// pass data/gamestate between players on play-card func
-// finalize Ui and make it look pretty
-//add continue logic
+// Tested for mobile, cards get too big when theres less than 5 cards in a players hand
+// Bug with the while loop - closes the app
+// game win lost screen
+// only displays on one side at the end of the game, something with bool isGameStarted 

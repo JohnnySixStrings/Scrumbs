@@ -7,7 +7,7 @@ namespace Scrumbs.SignalRGame;
 public class SpeedHub : Hub
 {
     private PlayersContext playerData;
-    private Dictionary<string, bool> IsWillingDict = new Dictionary<string, bool>();
+    private static Dictionary<string, bool> IsWillingDict = new Dictionary<string, bool>();
     public SpeedHub(PlayersContext data)
     {
         playerData = data;

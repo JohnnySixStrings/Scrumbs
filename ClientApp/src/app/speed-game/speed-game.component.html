@@ -1,4 +1,4 @@
-<div class="board">
+<div class="board" *ngIf="isGameStarted">
   <div id="hand1" class="player">
     <div class="stack">
       <p>{{ hand1Stack?.length }} {{ player2Name }}</p>
@@ -95,5 +95,5 @@
   <button btn btn-primary (click)="newUser()">New User</button>
   <br />
   <button btn btn-primary (click)="newGame()">Play Game!</button>
-  <button btn btn-primary (click)="playAgain()">Play a rematch!</button>
+  <button btn btn-primary (click)="playAgain()" *ngIf="isGameOver" >Play a rematch!</button>
 </div>
