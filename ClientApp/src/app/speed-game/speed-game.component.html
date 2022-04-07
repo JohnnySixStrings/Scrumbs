@@ -1,84 +1,99 @@
 <div class="board">
-  
   <div id="hand1" class="player">
     <div class="stack">
-      <p>{{hand1Stack?.length}} {{player2Name}}</p>
+      <p>{{ hand1Stack?.length }} {{ player2Name }}</p>
     </div>
     <div class="middle">
-      <app-cards *ngFor="let card of hand1"
-                 [cardInfo]="card"></app-cards>
+      <app-cards *ngFor="let card of hand1" [cardInfo]="card"></app-cards>
     </div>
   </div>
 
   <div class="middle">
-    <div id="continueL" class="continue contL" cdkDropList [cdkDropListData]="continueL" [cdkDropListConnectedTo]="[playableLeft]">
+    <div
+      id="continueL"
+      class="continue contL"
+      cdkDropList
+      [cdkDropListData]="continueL"
+      [cdkDropListConnectedTo]="[playableLeft]"
+    >
       <ng-container *ngFor="let card of continueL; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
     </div>
 
-    <div id="playL"
-         class="play playL"
-         cdkDropList
-         #playableLeft="cdkDropList"
-         [cdkDropListData]="playL"
-         [cdkDropListConnectedTo]="[playerHand]"
-         (cdkDropListDropped)="drop($event)"
-         [cdkDropListEnterPredicate]="matchPredicate"
-         cdkDropListSortingDisabled>
+    <div
+      id="playL"
+      class="play playL"
+      cdkDropList
+      #playableLeft="cdkDropList"
+      [cdkDropListData]="playL"
+      [cdkDropListConnectedTo]="[playerHand]"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListEnterPredicate]="matchPredicate"
+      cdkDropListSortingDisabled
+    >
       <ng-container *ngFor="let card of playL; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
     </div>
 
-    <div id="playR"
-         class="play playR"
-         cdkDropList
-         #playableRight="cdkDropList"
-         [cdkDropListData]="playR"
-         [cdkDropListConnectedTo]="[playerHand]"
-         (cdkDropListDropped)="drop($event)"
-         [cdkDropListEnterPredicate]="matchPredicate"
-         cdkDropListSortingDisabled>
+    <div
+      id="playR"
+      class="play playR"
+      cdkDropList
+      #playableRight="cdkDropList"
+      [cdkDropListData]="playR"
+      [cdkDropListConnectedTo]="[playerHand]"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListEnterPredicate]="matchPredicate"
+      cdkDropListSortingDisabled
+    >
       <ng-container *ngFor="let card of playR; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
     </div>
 
-    <div id="continueR" class="continue contR" cdkDropList [cdkDropListData]="continueR" [cdkDropListConnectedTo]="[playableRight]">
+    <div
+      id="continueR"
+      class="continue contR"
+      cdkDropList
+      [cdkDropListData]="continueR"
+      [cdkDropListConnectedTo]="[playableRight]"
+    >
       <ng-container *ngFor="let card of continueR; first as isFirst">
         <app-cards *ngIf="isFirst" [cardInfo]="card" cdkDrag></app-cards>
       </ng-container>
     </div>
   </div>
 
-  <div id="hand2"
-       class="player"
-       cdkDropList
-       #playerHand="cdkDropList"
-       [cdkDropListData]="hand2"
-       [cdkDropListConnectedTo]="[playableLeft, playableRight]"
-       cdkDropListSortingDisabled>
+  <div
+    id="hand2"
+    class="player"
+    cdkDropList
+    #playerHand="cdkDropList"
+    [cdkDropListData]="hand2"
+    [cdkDropListConnectedTo]="[playableLeft, playableRight]"
+    cdkDropListSortingDisabled
+  >
     <div class="middle">
-      <app-cards *ngFor="let card of hand2"
-                 [cardInfo]="card"
-                 cdkDrag></app-cards>
+      <app-cards
+        *ngFor="let card of hand2"
+        [cardInfo]="card"
+        cdkDrag
+      ></app-cards>
     </div>
 
     <div class="stack">
-      <p>{{playerName}} has {{hand2Stack?.length}} cards left</p>
+      <p>{{ playerName }} has {{ hand2Stack?.length }} cards left</p>
     </div>
-    
   </div>
 </div>
 
 <div id="playGame">
-
   <label for="name">Name: </label>
-  <input type="text" [formControl]="name" id="userInput" value="Joe">
+  <input type="text" [formControl]="name" id="userInput" value="Joe" />
   <button btn btn-primary (click)="newUser()">New User</button>
-  <br>
+  <br />
   <button btn btn-primary (click)="newGame()">Play Game!</button>
   <button btn btn-primary (click)="playAgain()">Play a rematch!</button>
 </div>
-

@@ -2,11 +2,11 @@ div {
   font-family: Lato;
   text-align: center;
 }
-  
+
 .board {
   display: flex;
   flex-direction: column;
-  border: 1px #6F2232 ;
+  border: 1px #6f2232;
 }
 
 .middle {
@@ -21,7 +21,7 @@ div {
   display: flex;
   width: 1296px;
   flex-direction: column;*/
-  background-color: #1A1A1D;
+  background-color: #1a1a1d;
   padding: 10px;
 }
 
@@ -29,9 +29,9 @@ div {
   border: 1px solid black;
   display: flex;
   flex-direction: column;
-  background-color: #4E4E50;
+  background-color: #4e4e50;
   width: 400px;
-  padding: .5em;
+  padding: 0.5em;
   justify-content: center;
 }
 
@@ -39,18 +39,18 @@ div {
   border: 1px solid black;
   display: flex;
   flex-direction: column;
-  background-color: #6F2232;
+  background-color: #6f2232;
   width: 400px;
-  padding: .5em;
+  padding: 0.5em;
   justify-content: center;
 }
 
 .card {
-    padding: 0.75em 1.5em 0.75em 1em;
-    margin: 1.5em;
-    cursor: pointer;
-    font-size: 0.85em;
-    font-family: "Roboto Slab", sans-serif;
+  padding: 0.75em 1.5em 0.75em 1em;
+  margin: 1.5em;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-family: "Roboto Slab", sans-serif;
 }
 
 .card:hover {
@@ -67,18 +67,17 @@ div {
   min-height: 0px;
   max-height: 0px;
 }
-  
+
 .hand {
-  
 }
 
 #playGame {
-    padding: 1%;
-    background-color: #4E4E50;
+  padding: 1%;
+  background-color: #4e4e50;
 }
 
 button {
-  background-color: #1A1A1D;
+  background-color: #1a1a1d;
   color: white;
   font-size: large;
   margin: 0.5%;
@@ -91,8 +90,7 @@ label {
 }
 
 .stack {
-    color: white;
-    margin: 5px 10px;
-    font-size: xx-large;
+  color: white;
+  margin: 5px 10px;
+  font-size: xx-large;
 }
-

@@ -28,7 +28,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   playerName: string = '';
   player2Name: string = '';
   isPlayerOne: boolean = true;
-  
+
   isPlayerWilling: boolean = true;
   isGameOver: boolean = false;
   isGameWon: boolean;
@@ -41,18 +41,18 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         suiteNumber: c.suiteNumber,
         house: c.house,
         faceUp: false,
-      }));;
+      }));
       this.hand2 = data.hand1.map((c) => ({
         suiteNumber: c.suiteNumber,
         house: c.house,
         faceUp: true,
-      }));;
+      }));
       this.continueR = data.continueL;
       this.continueL = data.continueR;
       this.hand2Stack = data.hand1Stack;
       this.hand1Stack = data.hand2Stack;
       this.playR = data.playL;
-      this.playL = data.playR;    
+      this.playL = data.playR;
     });
 
     signalr.addHandler('NewGame', (data) => {
@@ -102,8 +102,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
         this.playR = data.playL;
         this.playL = data.playR;
       }
-      
-    })
+    });
   }
 
   ngOnDestroy(): void {
@@ -113,7 +112,16 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   playcard() {
-    this.signalr.playCard({ hand1: this.hand1, hand2: this.hand2, playL: this.playL, playR: this.playR, continueL: this.continueL, continueR: this.continueR, hand1Stack: this.hand1Stack, hand2Stack: this.hand2Stack });
+    this.signalr.playCard({
+      hand1: this.hand1,
+      hand2: this.hand2,
+      playL: this.playL,
+      playR: this.playR,
+      continueL: this.continueL,
+      continueR: this.continueR,
+      hand1Stack: this.hand1Stack,
+      hand2Stack: this.hand2Stack,
+    });
   }
 
   drop(event: CdkDragDrop<CardInfo[]>) {
@@ -124,7 +132,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, 0);
     } else {
-      event.previousContainer.data[event.previousIndex].faceUp = true; 
+      event.previousContainer.data[event.previousIndex].faceUp = true;
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -134,12 +142,12 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
 
       let pelement = event.previousContainer.element.nativeElement.id;
 
-      if (pelement != "continueR" && pelement != "continueL") {
+      if (pelement != 'continueR' && pelement != 'continueL') {
         let card: CardInfo = this.hand2Stack[this.hand2Stack.length - 1];
         card.faceUp = true;
         this.hand2.push(card);
         this.hand2Stack.pop();
-      } 
+      }
       this.playcard();
     }
 
@@ -156,8 +164,8 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
     let element = event.container.element.nativeElement.id;
     let pelement = event.previousContainer.element.nativeElement.id;
 
-    if (pelement == "continueR" || pelement == "continueL") {
-       return true;
+    if (pelement == 'continueR' || pelement == 'continueL') {
+      return true;
     }
 
     if (element == 'playL' || element == 'playR') {
@@ -181,7 +189,7 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   playAgain() {
-    this.signalr.playAgain(this.playerName, this.isPlayerWilling)
+    this.signalr.playAgain(this.playerName, this.isPlayerWilling);
   }
 
   newUser() {
@@ -190,29 +198,35 @@ export class SpeedGameComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    this.signalr.reset({ continueL: this.continueL, continueR: this.continueR, playL: this.playL, playR: this.playR, isPlayerOne: this.isPlayerOne});
+    this.signalr.reset({
+      continueL: this.continueL,
+      continueR: this.continueR,
+      playL: this.playL,
+      playR: this.playR,
+      isPlayerOne: this.isPlayerOne,
+    });
   }
 
   check() {
-
     if (this.continueL.length === 0 && this.continueR.length === 0) {
-
       for (let i = 0; i < this.hand1.length; i++) {
-
-        if (this.hand1[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
+        if (
+          this.hand1[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
           this.hand1[i].suiteNumber == this.playL[0].suiteNumber - 1 ||
           this.hand1[i].suiteNumber == this.playR[0].suiteNumber + 1 ||
-          this.hand1[i].suiteNumber == this.playR[0].suiteNumber - 1) {
+          this.hand1[i].suiteNumber == this.playR[0].suiteNumber - 1
+        ) {
           return false;
         }
       }
 
       for (let i = 0; i < this.hand2.length; i++) {
-
-        if (this.hand2[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
+        if (
+          this.hand2[i].suiteNumber == this.playL[0].suiteNumber + 1 ||
           this.hand2[i].suiteNumber == this.playL[0].suiteNumber - 1 ||
           this.hand2[i].suiteNumber == this.playR[0].suiteNumber + 1 ||
-          this.hand2[i].suiteNumber == this.playR[0].suiteNumber - 1) {
+          this.hand2[i].suiteNumber == this.playR[0].suiteNumber - 1
+        ) {
           return false;
         }
       }

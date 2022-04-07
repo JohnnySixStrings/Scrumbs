@@ -59,7 +59,7 @@ export class SignalrService {
       .catch((err) => console.log(`Error with NewUser: ${err}`));
   }
 
-  public getConnectionId() : string {
+  public getConnectionId(): string {
     return this.hubConnection.connectionId;
   }
 }
