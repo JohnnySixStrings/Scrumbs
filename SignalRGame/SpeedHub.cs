@@ -52,7 +52,7 @@ public class SpeedHub : Hub
 
     public async Task playAgain(string userName, bool isWilling)
     {
-        IsWillingDict.TryAdd(userName, isWilling);
+        IsWillingDict.TryAdd(Context.ConnectionId, isWilling);
         if(IsWillingDict.Where(p => p.Value == true).Count() > 1){
             await NewGame();
         }
